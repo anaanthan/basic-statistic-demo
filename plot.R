@@ -1,5 +1,3 @@
-## Anaanthan 
-
 # Loading data (diamonds data comes with ggplot2 package)
 library(ggplot2)
 data=diamonds
