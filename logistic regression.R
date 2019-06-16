@@ -13,6 +13,13 @@ df<- data.frame(ID,SBP,HL)
 model <- glm (HL ~ SBP, data = df, family = binomial)
 summary(model)
 
+#McFadden (pseudo) Rsquared
+install.packages("pscl")
+library(pscl)
+
+pR2(model)
+
+
 predict <- predict(model, type = 'response')
 
 #confusion matrix
@@ -22,9 +29,30 @@ table(df$HL, predict > 0.5)
 library(ROCR)
 ROCRpred <- prediction(predict, df$HL)
 ROCRperf <- performance(ROCRpred, 'tpr','fpr')
-plot(ROCRperf, colorize = TRUE, text.adj = c(-0.2,1.7))
+plot(ROCRperf,xlab="Specificity (true negatives)",ylab="Sensitivity (true positives)") 
+abline(0,1)
 
-#plot glm
+#Calculate the area under the curve as a measure for model performance
+auc <- performance(ROCRpred, measure = "auc")
+auc <- auc@y.values[[1]]
+auc #Target = auc> 0.8
+
+
+#ggplot
 library(ggplot2)
-ggplot(df, aes(x=SBP, y=HL)) + geom_point() + 
-  stat_smooth(method="glm", family="binomial", se=FALSE)
+
+logistic1 <- ggplot(data = df, aes(x=SBP, y=HL))  +
+  geom_point()+ 
+  theme_bw()+
+  labs(x= "Systolic BP (mmHg)",y= expression("Probability of HL"))+
+  ylim(0,1)
+plot1a
+
+
+
+#full plot
+intercept <- coef(model)[1]
+slope <-  coef(model)[2]
+
+logistic2 <- logistic1 + stat_function(fun = function(x) {1/(1+exp(-intercept -slope *(x)))})
+logistic2
