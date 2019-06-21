@@ -1,4 +1,4 @@
-## Anaanthan ##
+
 
 # Loading data 
 # dataset diamond comes with ggplot2 package
