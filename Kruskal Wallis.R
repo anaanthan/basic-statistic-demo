@@ -1,4 +1,4 @@
-## Anaanthan ##
+
 
 # load data #
 data=ToothGrowth
