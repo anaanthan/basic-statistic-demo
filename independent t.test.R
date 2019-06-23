@@ -1,5 +1,3 @@
-## Anaanthan ##
-
 ## Sample independent t-test R-code ##
 
 ## Let us begin with built in dataset, ToothGrowth ##
